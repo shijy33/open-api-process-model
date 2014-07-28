@@ -17,10 +17,7 @@ class RpcPlugin extends Yaf\Plugin_Abstract {
 	public function routerShutdown(Yaf\Request_Abstract $request, Yaf\Response_Abstract $response) {
 
 		//RPC INIT START -->
-		if ($request->controller == 'Api' || $request->controller == 'Test') {
 			\Core\Rpc::initialize();
-		}
-
 		//RPC INIT END <--
 
 	}
@@ -38,7 +35,7 @@ class RpcPlugin extends Yaf\Plugin_Abstract {
 	}
 
 	public function dispatchLoopShutdown(Yaf\Request_Abstract $request, Yaf\Response_Abstract $response) {
-
+		\Core\Rpc::handle();
 	}
 
 	public function preResponse(Yaf\Request_Abstract $request, Yaf\Response_Abstract $response) {

@@ -15,15 +15,12 @@ class Bootstrap extends Yaf\Bootstrap_Abstract{
 	}
 	
 	public function _initRoute(Yaf\Dispatcher $dispatcher) {
-		$dispatcher->getRouter()->addConfig(Yaf\Registry::get('config')->routes);
+		//$dispatcher->getRouter()->addConfig(Yaf\Registry::get('config')->routes);
 	}
 	
 	public function _initMemorySet(Yaf\Dispatcher $dispatcher) {
 		//初始化常量
-		Yaf\Registry::set('_REQUEST', NULL);
-		Yaf\Registry::set('_APP', FALSE);
-		Yaf\Registry::set('_API', FALSE);
-		Yaf\Registry::set('_RESULT', NULL);
+		Yaf\Registry::set('_SERVICE', NULL);
 		//初始化其他内容
 	}
 	
@@ -38,6 +35,7 @@ class Bootstrap extends Yaf\Bootstrap_Abstract{
 
 	public function _initPlugin(Yaf\Dispatcher $dispatcher) {
 		//注册插件
+		$dispatcher->registerPlugin(new InitPlugin());
 		$dispatcher->registerPlugin(new SecurityPlugin());
 		$dispatcher->registerPlugin(new AuthorizePlugin());
 		$dispatcher->registerPlugin(new RpcPlugin());

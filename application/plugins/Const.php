@@ -9,23 +9,24 @@
  * Time    20:36
  */
 
-class AuthorizePlugin extends Yaf\Plugin_Abstract {
+class ConstPlugin extends Yaf\Plugin_Abstract {
+
+	function __construct() {
+		//parse constant config
+		$_conf = get_yaf_config('constant.ini');
+
+		foreach ($_conf as $_property => $_value) {
+			define($_property, $_value);
+		}
+
+
+		unset($_conf);
+	}
 
 	public function routerStartup(Yaf\Request_Abstract $request, Yaf\Response_Abstract $response) {
 	}
 
 	public function routerShutdown(Yaf\Request_Abstract $request, Yaf\Response_Abstract $response) {
-		$_result = FALSE;
-		if (($request->controller != 'Error' || $request->controller != 'Test') && $request->method == 'GET') {
-			$_result = $this->__authorize($_SERVER['QUERY_STRING'], $request, \Yaf\Registry::get('_SERVICE'));
-		} else {
-			$_result = TRUE;
-		}
-
-		if ($_result == FALSE) {
-			header('HTTP/1.1 401 Unauthorized');
-			exit();
-		}
 	}
 
 	public function dispatchLoopStartup(Yaf\Request_Abstract $request, Yaf\Response_Abstract $response) {
@@ -49,17 +50,9 @@ class AuthorizePlugin extends Yaf\Plugin_Abstract {
 	}
 
 	function __destruct() {
-		//\LOG::record();
 	}
 
-	private function __authorize($_query_string, $_request, $_conf) {
-		$_result = FALSE;
-		if ($_conf->{strtolower($_request->controller)}->{strtolower($_request->action)}->secret
-			==
-			explode('&', $_query_string)[1]) {
-			$_result = TRUE;
-		}
-
-		return $_result;
+	private function _app_define($_array = []) {
+		foreach ($_array as $k => $v) define('API_'.strtoupper($k), $v);
 	}
 } 
