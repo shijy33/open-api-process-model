@@ -12,6 +12,7 @@
 class InitPlugin extends Yaf\Plugin_Abstract {
 	function __construct() {
 		\Yaf\Registry::set('_SERVICE', get_yaf_config('service.ini'));
+
 	}
 
 	public function routerStartup(Yaf\Request_Abstract $request, Yaf\Response_Abstract $response) {
